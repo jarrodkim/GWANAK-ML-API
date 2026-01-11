@@ -1,0 +1,16 @@
+---
+- name: Uninstall Prometheus and Grafana from EKS
+  hosts: localhost
+  connection: local
+  tasks:
+    - name: Uninstall kube-prometheus-stack via Helm
+      kubernetes.core.helm:
+        name: kube-stack
+        release_namespace: monitoring
+        state: absent
+
+    - name: Delete monitoring namespace
+      kubernetes.core.k8s:
+        name: monitoring
+        kind: Namespace
+        state: absent
